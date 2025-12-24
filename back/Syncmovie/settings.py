@@ -98,12 +98,14 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
-    'https://syncmovie.netlify.app',
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://127.0.0.1:5173',
+#     'http://localhost:5173',
+#     'https://syncmovie.netlify.app',
+# ]
 
+CORS_ALLOW_ALL_ORIGINS = True # 일단 모든 문을 열어 통신 성공부터 확인합시다!
+CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
     'https://syncmovie.netlify.app',
