@@ -33,6 +33,7 @@ const router = useRouter()                         // ✅ router 생성
 const keyword = ref(route.query.q || '')
 const movies = ref([])
 const loading = ref(false)
+const API_URL = import.meta.env.VITE_API_URL
 
 const fetchSearchMovies = async () => {
   const q = keyword.value.trim()
@@ -42,7 +43,7 @@ const fetchSearchMovies = async () => {
   }
   loading.value = true
   try {
-    const res = await axios.get('http://localhost:8000/api/v1/movies/search/', {
+    const res = await axios.get(`${API_URL}/api/v1/movies/search/`, {
       params: { q },
     })
     // console.log('검색 응답:', res.data)

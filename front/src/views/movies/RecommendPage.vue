@@ -84,6 +84,8 @@ import { useRecommendStore } from '@/stores/recommend'
 import { mapState, mapActions } from 'pinia'
 import { watch } from 'vue' 
 
+const API_URL = import.meta.env.VITE_API_URL
+
 export default {
   name: 'RecommendPage',
   data() {
@@ -149,7 +151,7 @@ export default {
       const excludeIds = this.selectedMovies.map(m => m.id).join(',');
       
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/movies/random/?num=${numUnselected}&exclude=${excludeIds}`);
+        const response = await axios.get(`${API_URL}/api/v1/movies/random/?num=${numUnselected}&exclude=${excludeIds}`);
         this.currentMovies = [...this.selectedMovies, ...response.data];
         
         // Pinia에 거쳐간 영화 저장
@@ -167,14 +169,14 @@ export default {
       const excludeIds = [...this.selectedMovies.map(m => m.id), ...this.seenUnselectedMovies.map(m => m.id)].join(',');
       
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/v1/movies/random/?num=${numUnselected}&exclude=${excludeIds}`);
+        const response = await axios.get(`${API_URL}/api/v1/movies/random/?num=${numUnselected}&exclude=${excludeIds}`);
         let newUnselected = response.data;
         
         // 후보 부족 시 본 영화 목록 초기화 후 재시도
         if (newUnselected.length < numUnselected) {
           const store = useRecommendStore();
           store.seenUnselectedMovies = [];
-          const retryRes = await axios.get(`http://127.0.0.1:8000/api/v1/movies/random/?num=${numUnselected}&exclude=${this.selectedMovies.map(m=>m.id).join(',')}`);
+          const retryRes = await axios.get(`${API_URL}/api/v1/movies/random/?num=${numUnselected}&exclude=${this.selectedMovies.map(m=>m.id).join(',')}`);
           newUnselected = retryRes.data;
         }
 
@@ -191,7 +193,7 @@ export default {
       this.isLoadingRecommendations = true;
 
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/v1/recommend/', {
+        const response = await axios.post(`${API_URL}/api/v1/recommend/`, {
           movie_ids: this.selectedMovies.map(m => m.id),
           type: this.selectedType
         });

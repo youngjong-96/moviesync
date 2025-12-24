@@ -130,6 +130,7 @@ const password = ref('')
 const password2 = ref('')
 const errors = ref({})
 const store = useAuthStore()
+const API_URL = import.meta.env.VITE_API_URL
 
 // 아이디 중복 확인 관련 변수
 const isUsernameChecked = ref(false)
@@ -204,7 +205,7 @@ const checkUsernameDuplication = async () => {
     return
   }
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/v1/accounts/check-username/', {
+    const response = await axios.get(`${API_URL}/api/v1/accounts/check-username/`, {
       params: { username: username.value }
     })
     isUsernameAvailable.value = response.data.is_available
@@ -220,7 +221,7 @@ const recommendNickname = async () => {
   isAiLoading.value = true
   try {
     // 백엔드 DRF 서버 엔드포인트 호출
-    const response = await axios.get('http://127.0.0.1:8000/api/v1/accounts/recommend-nickname/')
+    const response = await axios.get(`${API_URL}/api/v1/accounts/recommend-nickname/`)
     const suggestedName = response.data.nickname
     
     aiSuggestion.value = suggestedName
@@ -248,7 +249,7 @@ const checkNicknameDuplication = async () => {
   }
   
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/v1/accounts/check-nickname/`, {
+    const response = await axios.get(`${API_URL}/api/v1/accounts/check-nickname/`, {
       params: { nickname: nickname.value }
     })
     
